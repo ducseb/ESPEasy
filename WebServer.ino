@@ -1210,6 +1210,7 @@ void handle_control() {
   TempEvent.Par1 = 0;
   TempEvent.Par2 = 0;
   TempEvent.Par3 = 0;
+  TempEvent.Par4 = 0;
 
   char Cmd[40];
   Cmd[0] = 0;
@@ -1217,6 +1218,7 @@ void handle_control() {
   if (GetArgv(command, TmpStr1, 2)) TempEvent.Par1 = str2int(TmpStr1);
   if (GetArgv(command, TmpStr1, 3)) TempEvent.Par2 = str2int(TmpStr1);
   if (GetArgv(command, TmpStr1, 4)) TempEvent.Par3 = str2int(TmpStr1);
+  if (GetArgv(command, TmpStr1, 5)) TempEvent.Par4 = str2int(TmpStr1);
 
   printToWeb = true;
   printWebString = "";

@@ -193,7 +193,7 @@ boolean Plugin_001(byte function, struct EventStruct *event, String& string)
               printWebString += F("<BR>");
             }
           }
-        }
+        }       
 
         if (tmpString.equalsIgnoreCase("PWM"))
         {
@@ -255,6 +255,97 @@ boolean Plugin_001(byte function, struct EventStruct *event, String& string)
               printWebString += event->Par2;
               printWebString += F(" Servo set to ");
               printWebString += event->Par3;
+              printWebString += F("<BR>");
+            }
+          }
+        }
+        if (tmpString.equalsIgnoreCase("DOUBLEGPIO"))
+        {
+          success = true;
+          if (event->Par1 >= 0 && event->Par1 <= 16 && event->Par3 >= 0 && event->Par3 <= 16) 
+          {
+            pinMode(event->Par1, OUTPUT);
+            pinMode(event->Par3, OUTPUT);
+            digitalWrite(event->Par1, event->Par2);           
+            digitalWrite(event->Par3, event->Par4);
+            if (printToWeb)
+            {
+              printWebString += F("GPIO ");
+              printWebString += event->Par1;
+              printWebString += F(" set to ");
+              printWebString += event->Par2;
+              printWebString += F("<BR>");
+              printWebString += F("GPIO ");
+              printWebString += event->Par3;
+              printWebString += F(" set to ");
+              printWebString += event->Par4;
+              printWebString += F("<BR>");
+            }
+          }
+        }
+
+        if (tmpString.equalsIgnoreCase("PILOTWIRE"))
+        {
+          success = true;
+          String PilotWireMode="NOMODE";
+          bool levelGPIO1=false;
+          bool levelGPIO2=false;
+
+          
+          if (event->Par1 >= 0 && event->Par1 <= 16 && event->Par2 >= 0 && event->Par2 <= 16 && event->Par3 >= 0 && event->Par3 <= 3) 
+          {
+            
+            pinMode(event->Par1, OUTPUT);
+            pinMode(event->Par2, OUTPUT);
+
+            if(event->Par3=0)// STOP MODE
+            {
+               levelGPIO1=0;
+               levelGPIO2=1;
+               digitalWrite(event->Par1, levelGPIO1);           
+               digitalWrite(event->Par2, levelGPIO2);
+                PilotWireMode="STOP";
+            }
+            else if (event->Par3=1) // CONFORT MODE
+            {
+               levelGPIO1=0;
+               levelGPIO2=0;
+               digitalWrite(event->Par1, levelGPIO1);           
+               digitalWrite(event->Par2, levelGPIO2);
+               PilotWireMode="CONFORT";
+            }
+            else if (event->Par3=2) // ECO MODE
+            {
+               levelGPIO1=1;
+               levelGPIO2=1;
+               digitalWrite(event->Par1, levelGPIO1);           
+               digitalWrite(event->Par2, levelGPIO2);
+               PilotWireMode="ECO";
+            }
+            else if (event->Par3=3) // ICEFREE MODE
+            {
+               levelGPIO1=1;
+               levelGPIO2=0;
+               digitalWrite(event->Par1, levelGPIO1);           
+               digitalWrite(event->Par2, levelGPIO2);
+               PilotWireMode="ICEFREE";
+            }
+            
+           
+            if (printToWeb)
+            {
+              printWebString += F("GPIO ");
+              printWebString += event->Par1;
+              printWebString += F(" set to ");
+              printWebString += levelGPIO1;
+              printWebString += F("<BR>");
+              printWebString += F("GPIO ");
+              printWebString += event->Par3;
+              printWebString += F(" set to ");
+              printWebString += levelGPIO2;
+              printWebString += F("<BR>");
+              printWebString += F("Pilot wire set to: ");
+              printWebString += PilotWireMode;
               printWebString += F("<BR>");
             }
           }

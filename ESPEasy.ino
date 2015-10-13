@@ -225,6 +225,7 @@ struct EventStruct
   int Par1;
   int Par2;
   int Par3;
+  int Par4;
   byte OriginTaskIndex;
   String String1;
   String String2;
